@@ -1,6 +1,6 @@
 import click
 import tabulate as tabulate
-
+import db_client
 from db_client import get_toil_balance, update_toil_balance, get_all_users_data
 
 TOIL_DESCRIPTION = """
@@ -90,6 +90,27 @@ def show_all_users():
 
 
 cli.add_command(show_all_users)
+import csv
+
+@click.command()
+@click.option("--output-file", required=True, help="Path to the output CSV file.")
+def export_to_csv(output_file):
+    """Export all users' TOIL data to a CSV file."""
+    all_users_data = get_all_users_data()
+
+    headers = ["User ID", "TOIL Hours", "TOIL Days Off"]
+
+    # Write data to the CSV file
+    with open(output_file, "w", newline="") as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(headers)
+        csvwriter.writerows(all_users_data)
+
+    click.echo(f"TOIL data exported to {output_file} successfully!")
+
+cli.add_command(export_to_csv)
+
+
 
 if __name__ == "__main__":
     cli()
