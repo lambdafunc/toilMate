@@ -2,6 +2,7 @@
 TOIL counting tool 
 
 Fairly simple and straight forward tool to keep track of TOIL hours ;)
+
 Usage:
 ```
 ✦ ❯ python cli.py
